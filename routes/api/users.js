@@ -89,4 +89,19 @@ router.post("/login", (req, res) => {
   });
 });
 
+//GET api/users/current
+//return current users
+//private
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email
+    });
+  }
+);
+
 module.exports = router;

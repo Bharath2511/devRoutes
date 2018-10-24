@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 //loading models
 const User = require("../../models/User");
@@ -44,6 +45,29 @@ router.post("/register", (req, res) => {
         });
       });
     }
+  });
+});
+
+//GET api/users/login
+//login users
+//public access
+router.post("/login", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  //find the user by email
+  User.findOne({ email }).then(user => {
+    //check for user
+    if (!user) {
+      return res.status(404).json({ email: "user not found" });
+    }
+    //check password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        res.json({ msg: "success" });
+      } else {
+        return res.status(400).json({ password: "password incorrect" });
+      }
+    });
   });
 });
 

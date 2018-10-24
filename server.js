@@ -6,6 +6,8 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.listen(2400, () => {
-  console.log(2400);
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+  console.log(5000);
 });

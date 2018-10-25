@@ -21,7 +21,18 @@ router.get("/", (req, res) => {
   Post.find()
     .sort({ date: -1 })
     .then(posts => res.json(posts))
-    .catch(err => res.status(404).json(err));
+    .catch(err => res.status(404).json({ nopostsfound: "no posts found" }));
+});
+
+//GET api/posts/:id
+//get posts by id
+//public access
+router.get("/:id", (req, res) => {
+  Post.findById(req.params.id)
+    .then(post => res.json(post))
+    .catch(err =>
+      res.status(404).json({ nopostfound: "no post found with that id" })
+    );
 });
 
 //POST api/posts

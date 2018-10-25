@@ -4,6 +4,7 @@ const passport = require("passport");
 
 //load validation
 const validateProfileInput = require("../../validation/profile");
+const validateExperienceInput = require("../../validation/experience");
 
 //load models
 const Profile = require("../../models/Profile");
@@ -163,6 +164,13 @@ router.post(
   "/experience",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+
+    //check validation
+    if (!isValid) {
+      //return any errors with 400 status
+      return res.status(400).json(errors);
+    }
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newExp = {
         title: req.body.title,
@@ -176,9 +184,46 @@ router.post(
       //add to the experience array of profile
       profile.experience.unshift(newExp);
       //saving
-      profile.save();
-      //adding and return with new profile
-      then(profile => res.json(profile));
+      profile
+        .save()
+        //adding and return with new profile
+        .then(profile => res.json(profile));
+    });
+  }
+);
+
+//POST api/profile/education
+//add education to profile
+//private access
+
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+
+    //check validation
+    if (!isValid) {
+      //return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      };
+      //add to the experience array of profile
+      profile.experience.unshift(newExp);
+      //saving
+      profile
+        .save()
+        //adding and return with new profile
+        .then(profile => res.json(profile));
     });
   }
 );

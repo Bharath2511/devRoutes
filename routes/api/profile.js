@@ -26,13 +26,14 @@ router.get(
 
     //token is gonna put user into req.user
     Profile.findOne({ user: req.user.id })
+      .populate("user", ["name", "avatar"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
           return res.status(404).json(errors);
         }
         //literally its else
-        res.send(200).json(profile);
+        res.status(200).json(profile);
       })
       .catch(err => res.status(404).json(err));
   }

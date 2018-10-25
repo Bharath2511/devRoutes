@@ -14,6 +14,16 @@ router.get("/test", (req, res) => {
   res.json({ msg: "posts works" });
 });
 
+//GET api/posts
+//get posts
+//private access
+router.get("/", (req, res) => {
+  Post.find()
+    .sort({ date: -1 })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(404).json(err));
+});
+
 //POST api/posts
 //create posts
 //private access

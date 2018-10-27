@@ -1,6 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
+//import axios from "axios";
 import classnames from "classnames";
+//whenever we want to use redux in a component we call connect
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
 
 class Register extends Component {
   constructor() {
@@ -30,18 +34,20 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
+
+    this.props.registerUser(newUser);
     //we are using it in onsubmit because we need to save credentials to
     //db on submitting
     //axios.post 1)route 2)data that needed to be posted
-    axios
-      .post("/api/users/register", newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data }));
   }
   render() {
     const { errors } = this.state;
+
+    const { user } = this.props.auth;
+
     return (
       <div className="register">
+        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -125,4 +131,17 @@ class Register extends Component {
   }
 }
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+const mapStateToProps = state => ({
+  //we are putting auth state in a property called auth
+  //its coming from the root reducer
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Register);

@@ -12,11 +12,23 @@ class Register extends Component {
     };
     //we are binding this of onchange
     this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
   onChange(e) {
     //if its name field it is gonna be name and set it to the value
     //this is undefined here so we have to bind this to the value
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+    console.log(newUser);
   }
   render() {
     return (
@@ -28,7 +40,8 @@ class Register extends Component {
               <p className="lead text-center">
                 Create your DevConnector account
               </p>
-              <form action="create-profile.html">
+
+              <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
@@ -37,7 +50,6 @@ class Register extends Component {
                     name="name"
                     value={this.state.name}
                     onChange={this.onChange}
-                    required
                   />
                 </div>
                 <div className="form-group">
@@ -49,7 +61,7 @@ class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                   />
-                  <small classNameName="form-text text-muted">
+                  <small className="form-text text-muted">
                     This site uses Gravatar so if you want a profile image, use
                     a Gravatar email
                   </small>
@@ -59,6 +71,7 @@ class Register extends Component {
                     type="password"
                     className="form-control form-control-lg"
                     placeholder="Password"
+                    name="password"
                     value={this.state.password}
                     onChange={this.onChange}
                   />
@@ -68,6 +81,7 @@ class Register extends Component {
                     type="password"
                     className="form-control form-control-lg"
                     placeholder="Confirm Password"
+                    name="password2"
                     value={this.state.password2}
                     onChange={this.onChange}
                   />

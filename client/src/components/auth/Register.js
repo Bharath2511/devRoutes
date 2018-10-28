@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+//for redirecting
+import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 //whenever we want to use redux in a component we call connect
 import { connect } from "react-redux";
@@ -19,6 +21,14 @@ class Register extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  //component will recieve props run when component recieves props
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange(e) {
     //if its name field it is gonna be name and set it to the value
     //this is undefined here so we have to bind this to the value
@@ -33,8 +43,8 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
-
-    this.props.registerUser(newUser);
+    //allowing us to redirect within this action
+    this.props.registerUser(newUser, this.props.history);
     //we are using it in onsubmit because we need to save credentials to
     //db on submitting
     //axios.post 1)route 2)data that needed to be posted
@@ -42,11 +52,8 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
 
-    const { user } = this.props.auth;
-
     return (
       <div className="register">
-        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -132,7 +139,8 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 //and also this comes from root reducer
 //we can access it using this.props.auth.id
@@ -147,4 +155,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { registerUser }
-)(Register);
+)(withRouter(Register));

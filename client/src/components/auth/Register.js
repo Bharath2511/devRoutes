@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-//import axios from "axios";
 import classnames from "classnames";
 //whenever we want to use redux in a component we call connect
 import { connect } from "react-redux";
@@ -135,10 +134,14 @@ Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
+//and also this comes from root reducer
+//we can access it using this.props.auth.id
+//getting any auth state inti component
 const mapStateToProps = state => ({
   //we are putting auth state in a property called auth
   //its coming from the root reducer
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(

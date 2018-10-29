@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   GET_PROFILE,
   PROFILE_LOADING,
-  // GET_ERRORS,
+  GET_ERRORS,
   CLEAR_CURRENT_PROFILE
 } from "./types";
 
@@ -24,6 +24,19 @@ export const getCurrentProfile = () => dispatch => {
         payload: {}
       })
     );
+};
+
+//create profile
+export const createProfile = (profileData, history) => dispatch => {
+  axios
+    .post("/api/profile", profileData)
+    .then(res => history.push("/dashboard"))
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
 
 //profile loading

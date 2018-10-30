@@ -45,7 +45,12 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
+          <div
+            className="App"
+            style={{
+              padding: "70px 0px 70px 0px"
+            }}
+          >
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">

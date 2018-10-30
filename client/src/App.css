@@ -4,7 +4,7 @@ img {
 
 .landing {
   position: relative;
-  background: url(' ./img/showcase.jpg') no-repeat;
+  background: url('https://cdn-images-1.medium.com/max/1920/1*ee9Ji2ToUxeYfj3YUQ1xsA.jpeg') no-repeat;
   background-size: cover;
   background-position: center;
   height: 100vh;

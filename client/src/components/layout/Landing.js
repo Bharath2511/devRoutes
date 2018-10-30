@@ -14,7 +14,12 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <div className="landing">
+        <div
+          className="landing"
+          style={{
+            padding: "20px 20px 20px 20px"
+          }}
+        >
           <div className="dark-overlay landing-inner text-light">
             <div className="container">
               <div className="row">
